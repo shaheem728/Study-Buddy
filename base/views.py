@@ -49,7 +49,7 @@ def home(request):
                         Q(name__icontains = q)|
                         Q(description__icontains = q))
     room_count = rooms.count()
-    topics = Topic.objects.all()
+    topics = Topic.objects.all()[0:5]
     room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
     context = {'rooms':rooms,'topics':topics,'room_count':room_count,'room_messages':room_messages}
     return render(request, 'base/home.html',context)
@@ -89,11 +89,6 @@ def createRoom(request):
             name=request.POST.get('name'),
             description=request.POST.get('description'),
          )
-        # form = RoomForm(request.POST)
-        # if form.is_valid():
-        #     room = form.save(commit=False)
-        #     room.host = room.user
-        #     room.save()
         return redirect('home')
     context = {'form':form,'topics':topics}
     return render(request,'base/room_form.html',context)
@@ -148,3 +143,12 @@ def updateUser(request):
             form.save()
             return redirect('user-profile',pk=user.id)
     return render(request,'base/update-user.html',{'form':form})
+
+def topicPage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    topics = Topic.objects.filter(name__icontains=q)
+    return render(request,'base/topics.html',{'topics':topics})
+
+def activityPage(request):
+    room_messages = Message.objects.all()
+    return render(request,'base/activity.html',{'room_messages':room_messages})

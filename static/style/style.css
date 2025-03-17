@@ -253,11 +253,12 @@ a {
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  margin-top:10px;
 }
 
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 900px) {
   .mobile-menu {
-    display: none;
+    display:none;
   }
 }
 
@@ -612,6 +613,7 @@ a {
   .mobile-menu .header__search {
     display: block;
     margin-bottom: 2.4rem;
+
   }
 }
 
