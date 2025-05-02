@@ -4,8 +4,6 @@
 
 # Study-Buddy
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-
 A community-driven chatroom web application that fosters collaborative learning and knowledge sharing. Study-Buddy allows users to create and join topic-specific rooms for interactive discussions, encouraging real-time communication and engagement within focused learning communities.
 
 ## Features
