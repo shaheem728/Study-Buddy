@@ -688,7 +688,7 @@ a {
 .roomListRoom__content a {
   font-size: 2rem;
   font-weight: 500;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2px;
   color: var(--color-light);
   transition: all 0.3s ease-in-out;
 }
@@ -1109,7 +1109,7 @@ a {
   background: transparent;
 }
 
-.room__message > form > input {
+/* .room__message > form > input {
   resize: none;
   background-color: var(--color-dark-light);
   color: var(--color-light);
@@ -1123,10 +1123,47 @@ a {
   font-size: 1.4rem;
   font-weight: 500;
   position: relative;
+} */
+.room__message > form   {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  resize: none;
+  background-color: var(--color-dark-light);
+  color: var(--color-light);
+  border-radius: 0.7rem;
+  height: 4.5rem;
+  width: 100%;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+.room__message > form > input {
+  resize: none;
+  background-color:var(--color-dark-light);
+  color: var(--color-light);
+  border: none;
+  outline: none;
+  border-radius: 0.7rem;
+  height: 4rem;
+  width: 100%;
+  font-size: 1.4rem;
+  padding-left: 1em;
+  font-weight: 500;
+  position: relative;
+}
+.room__message > form > svg {
+  padding-right: 1em;
+  height: 2.5rem;
+  width: 10%;
+ 
 }
 
-.room__message > form > input::placeholder {
+.room__message > form > input::placeholder  {
   color: var(--color-light-gray);
+}
+.form{
+  display: flex;
+  flex-direction: row;
 }
 
 .participants__top span {
