@@ -1109,21 +1109,25 @@ a {
   background: transparent;
 }
 
-/* .room__message > form > input {
-  resize: none;
+.input__box{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  bottom: 69;
+  right: 25;
+  height:5em;
+  width:10em;
   background-color: var(--color-dark-light);
   color: var(--color-light);
-  border: none;
-  outline: none;
   border-radius: 0.7rem;
-  height: 4.5rem;
-  width: 100%;
-  margin-top: -1rem;
-  padding: 1.2rem;
-  font-size: 1.4rem;
-  font-weight: 500;
-  position: relative;
-} */
+  z-index: 999;
+}
+.photo_video,.document{
+  display:flex;
+  align-items: center;
+  padding: 3px;
+}
 .room__message > form   {
   display: flex;
   justify-content: space-between;
@@ -1161,7 +1165,7 @@ a {
 .room__message > form > input::placeholder  {
   color: var(--color-light-gray);
 }
-.form{
+.room__form{
   display: flex;
   flex-direction: row;
 }

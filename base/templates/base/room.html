@@ -111,8 +111,12 @@
               </div>
             </div>
           </div>
+          {% if request.user.is_authenticated  %}
+          <div class="input__box">
+          {% include "base/input_selection_box.html"%}
+          </div>
           <div class="room__message">
-            <form class="form" action="" method="POST">
+            <form class="room__form" action="" method="POST">
               {% csrf_token %}
               <input name="body" placeholder="Write your message here..." />
               <svg
@@ -130,6 +134,7 @@
               </svg>
             </form>
           </div>
+          {% endif %}
         </div>
         <!-- Room End -->
 

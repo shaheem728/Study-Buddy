@@ -1109,24 +1109,58 @@ a {
   background: transparent;
 }
 
-.room__message > form > input {
+.input_box{
+  position: absolute;
+  bottom: 69;
+  right: 25;
+  height:5em;
+  width:5em;
+  background-color: var(--color-dark-light);
+  color: var(--color-light);
+  border-radius: 0.7rem;
+  z-index: 999;
+}
+
+.room__message > form   {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   resize: none;
   background-color: var(--color-dark-light);
+  color: var(--color-light);
+  border-radius: 0.7rem;
+  height: 4.5rem;
+  width: 100%;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+.room__message > form > input {
+  resize: none;
+  background-color:var(--color-dark-light);
   color: var(--color-light);
   border: none;
   outline: none;
   border-radius: 0.7rem;
-  height: 4.5rem;
+  height: 4rem;
   width: 100%;
-  margin-top: -1rem;
-  padding: 1.2rem;
   font-size: 1.4rem;
+  padding-left: 1em;
   font-weight: 500;
   position: relative;
 }
+.room__message > form > svg {
+  padding-right: 1em;
+  height: 2.5rem;
+  width: 10%;
+ 
+}
 
-.room__message > form > input::placeholder {
+.room__message > form > input::placeholder  {
   color: var(--color-light-gray);
+}
+.room__form{
+  display: flex;
+  flex-direction: row;
 }
 
 .participants__top span {
