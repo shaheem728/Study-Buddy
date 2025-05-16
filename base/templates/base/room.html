@@ -119,6 +119,8 @@
             <form class="room__form" action="" method="POST">
               {% csrf_token %}
               <input name="body" placeholder="Write your message here..." />
+            </form>
+              <button  class="clip__button">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
@@ -129,10 +131,11 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
+                id="cip_button"
               >
                 <path d="M21.44 11.05L12.05 20.44a5 5 0 01-7.07-7.07l9.39-9.39a3.5 3.5 0 015 5l-8.69 8.69a2 2 0 01-2.83-2.83l8.19-8.19" />
               </svg>
-            </form>
+              </button>
           </div>
           {% endif %}
         </div>

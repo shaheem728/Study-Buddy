@@ -46,11 +46,18 @@
 
 const dropdownMenu = document.querySelector(".dropdown-menu");
 const dropdownButton = document.querySelector(".dropdown-button");
-
+const input__box = document.querySelector(".input__box");
+const clip_button = document.querySelector(".clip__button")
 if (dropdownButton) {
   dropdownButton.addEventListener("click", () => {
     dropdownMenu.classList.toggle("show");
   });
+}
+
+if (clip_button) {
+  clip_button.addEventListener("click", () =>{
+  input__box.classList.toggle('show_box')
+  })
 }
 
 // Upload Image
