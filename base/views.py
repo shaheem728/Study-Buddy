@@ -6,7 +6,9 @@ from django.contrib.auth import authenticate,login,logout
 from django.db.models import Q
 from base.models import Room,Topic,Message,User
 from .forms import RoomForm,UserForm,MyUserCreationForm
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
+@csrf_exempt
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
