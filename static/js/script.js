@@ -74,3 +74,39 @@ if (photoInput)
 // Scroll to Bottom
 const conversationThread = document.querySelector(".room__box");
 if (conversationThread) conversationThread.scrollTop = conversationThread.scrollHeight;
+
+//Upload File
+function openFileInput(type) {
+    const fileInput = document.getElementById('file-input');
+    fileInput.accept = type === 'image' ? 'image/*' : '.pdf,.doc,.docx,.txt';
+    fileInput.onchange = function () {
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        uploadFile(formData);
+    };
+    fileInput.click();
+}
+
+function uploadFile(formData) {
+    fetch('/upload-file/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': getCsrfToken(),
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('File uploaded successfully!');
+                location.reload();
+            } else {
+                alert('Failed to upload file.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function getCsrfToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]').value;
+}

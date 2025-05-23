@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -62,7 +62,8 @@ def room(request,pk):
         message = Message.objects.create(
             user=request.user,
             room=room,
-            body=request.POST.get('body')
+            body=request.POST.get('body', '').strip(),
+            file = request.FILES.get('file'),
             )
         room.participants.add(request.user)
         return redirect('room', pk=room.id)
@@ -110,6 +111,28 @@ def updateRoom(request,pk):
         return redirect('home')
     context = {'form':form,'room':room}
     return render(request,'base/room_form.html',context)
+    
+# def upload_file(request):
+#     if request.method == 'POST':
+#         print(request)
+#         file = request.FILES.get('file')
+#         room_id = request.POST.get('room_id')  # Pass room ID from the frontend
+#         try:
+#             room = Room.objects.get(id=room_id)
+#         except Room.DoesNotExist:
+#             return JsonResponse({'error': 'Room does not exist'}, status=400)
+
+#         if file:
+#             message = Message.objects.create(
+#                 user=request.user,
+#                 room=room,
+#                 body="File uploaded",
+#                 file=file
+#             )
+#             return JsonResponse({'message': 'File uploaded successfully', 'file_url': message.file.url})
+#         else:
+#             return JsonResponse({'error': 'No file uploaded'}, status=400)
+#     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 @login_required(login_url='login')

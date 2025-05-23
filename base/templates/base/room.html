@@ -104,6 +104,9 @@
                   </div>
                   <div class="thread__details">
                     {{message.body}}
+                    {% if message.file %}
+                       <a href="{{ message.file.url }}" target="_blank">View File</a>
+                    {% endif %}
                   </div>
                 </div>
 

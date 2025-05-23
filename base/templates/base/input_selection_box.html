@@ -1,5 +1,4 @@
-            <!-- <input type="file" /> -->
-            <div class="photo_video"><svg
+            <div class="photo_video"  onclick="openFileInput('image')"><svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
             height="20"
@@ -16,7 +15,7 @@
           </svg>&nbsp; Photo & Gallery
           </div>
             <hr>
-            <div class="document">
+            <div class="document" onclick="openFileInput('document')">
               <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -35,4 +34,5 @@
             <line x1="10" y1="9" x2="8" y2="9" />
           </svg>&nbsp; Document
             </div>
-
+            <input id="file-input" type="file"  style="display: none;" />
+ 
