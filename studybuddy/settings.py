@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-&5hn#%irh+bg8+-!+0)h9$9py_tu1$6h3kxcym&aa+0n41qjmx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.onrender.com','*']
+ALLOWED_HOSTS = [
+    'study-buddy-xitx.onrender.com',
+    '127.0.0.1',
+]
+
 
 
 # Application definition
@@ -102,6 +106,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = 'base.User'
+CSRF_TRUSTED_ORIGINS = [
+    'https://study-buddy-xitx.onrender.com',
+]
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
