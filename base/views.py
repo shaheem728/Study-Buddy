@@ -7,7 +7,6 @@ from django.db.models import Q
 from base.models import Room,Topic,Message,User
 from .forms import RoomForm,UserForm,MyUserCreationForm
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404
 # Create your views here.
 @csrf_exempt
 def loginPage(request):
