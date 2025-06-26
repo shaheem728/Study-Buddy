@@ -75,19 +75,124 @@ if (photoInput)
 const conversationThread = document.querySelector(".room__box");
 if (conversationThread) conversationThread.scrollTop = conversationThread.scrollHeight;
 
+
 //Upload File
-function openFileInput(type) {
-    const fileInput = document.getElementById('file-input');
-    fileInput.accept = type === 'image' ? 'image/*' : '.pdf,.doc,.docx,.txt';
-    fileInput.onchange = function () {
-        const formData = new FormData();
-        formData.append('file', fileInput.files[0]);
-        uploadFile(formData);
-    };
-    fileInput.click();
+// function openFileInput(type, roomId) {
+//     const room_id = roomId.includes('/') ? roomId.split('/').filter(Boolean).pop() : roomId;
+//     console.log('Extracted room_id:', room_id);
+
+//     const fileInput = document.getElementById('file-input');
+//     if (!fileInput) {
+//         console.error('file-input element not found.');
+//         return;
+//     }
+
+//     fileInput.accept = type === 'image' ? 'image/*' : '.pdf,.doc,.docx,.txt';
+
+//     fileInput.onchange = function () {
+//         const formData = new FormData();
+//         formData.append('file', fileInput.files[0]); // Append file
+//         if (room_id) {
+//             formData.append('room_id', room_id); // Append room ID
+//         } else {
+//             alert('Room ID is missing.');
+//             return;
+//         }
+
+//         uploadFile(formData); // Call upload function
+//     };
+
+//     fileInput.click();
+// }
+// function uploadFile(formData) {
+//     fetch('/upload-file/', {
+//         method: 'POST',
+//         body: formData,
+//         headers: {
+//             'X-CSRFToken': getCsrfToken(),
+//         },
+//     })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error(`HTTP error! Status: ${response.status}`);
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             console.log('Server response:', data);
+//             if (data.success) {
+//                 fetchMessages(data.room_id); // Refresh messages if upload is successful
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error uploading file:', error);
+//         });
+// }
+
+// function getCsrfToken() {
+//     return document.querySelector('[name=csrfmiddlewaretoken]').value;
+// }
+
+async function fetchRoomContent(room_id) {
+    try {
+        const response = await fetch(`/room/${room_id}/`);
+        if (!response.ok) throw new Error(`Failed to fetch room content. Status: ${response.status}`);
+
+        const html = await response.text();
+
+        // Parse the HTML response
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Extract the threads section
+        const newThreads = doc.querySelector('.threads');
+        const newParticipants = doc.querySelector('.participants__list');
+
+        // Update the DOM
+        const threadsContainer = document.querySelector('.threads');
+        if (threadsContainer && newThreads) {
+            threadsContainer.innerHTML = newThreads.innerHTML;
+        }
+
+        const participantsContainer = document.querySelector('.participants__list');
+        if (participantsContainer && newParticipants) {
+            participantsContainer.innerHTML = newParticipants.innerHTML;
+        }
+    } catch (error) {
+        console.error('Error fetching room content:', error);
+    }
 }
 
-function uploadFile(formData) {
+
+//Upload File
+function openFileInput(type, roomId) {
+    const room_id = roomId.includes('/') ? roomId.split('/').filter(Boolean).pop() : roomId;
+    console.log('Extracted room_id:', room_id);
+
+    const fileInput = document.getElementById('file-input');
+    if (!fileInput) {
+        console.error('file-input element not found.');
+        return;
+    }
+
+    fileInput.accept = type === 'image' ? 'image/*' : '.pdf,.doc,.docx,.txt';
+
+    fileInput.onchange = function () {
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]); // Append file
+        if (room_id) {
+            formData.append('room_id', room_id); // Append room ID
+        } else {
+            alert('Room ID is missing.');
+            return;
+        }
+
+        uploadFile(formData,room_id); // Call upload function
+    };
+
+    fileInput.click();
+}
+function uploadFile(formData,room_id) {
     fetch('/upload-file/', {
         method: 'POST',
         body: formData,
@@ -95,17 +200,17 @@ function uploadFile(formData) {
             'X-CSRFToken': getCsrfToken(),
         },
     })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('File uploaded successfully!');
-                location.reload();
-            } else {
-                alert('Failed to upload file.');
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-        })
-        .catch(error => console.error('Error:', error));
+            // Refresh the room content after successful upload
+            return fetchRoomContent(room_id);
+        }).catch(error => {
+            console.error('Error uploading file:', error);
+        });
 }
+
 
 function getCsrfToken() {
     return document.querySelector('[name=csrfmiddlewaretoken]').value;

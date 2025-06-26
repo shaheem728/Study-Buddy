@@ -7,6 +7,7 @@ from django.db.models import Q
 from base.models import Room,Topic,Message,User
 from .forms import RoomForm,UserForm,MyUserCreationForm
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 # Create your views here.
 @csrf_exempt
 def loginPage(request):
@@ -27,6 +28,7 @@ def loginPage(request):
 def logoutUser(request):
     logout(request)
     return redirect('home')
+@csrf_exempt
 def registerPage(request):
     page = 'register'
     form = MyUserCreationForm()
@@ -53,6 +55,41 @@ def home(request):
     room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
     context = {'rooms':rooms,'topics':topics,'room_count':room_count,'room_messages':room_messages}
     return render(request, 'base/home.html',context)
+
+
+
+@csrf_exempt
+def upload_file(request):
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+        room_id = request.POST.get('room_id')
+        body = request.POST.get('body', '')
+
+        if not room_id:
+            return JsonResponse({'error': 'Room ID is required'}, status=400)
+
+        try:
+            room_instance = Room.objects.get(id=room_id)
+        except Room.DoesNotExist:
+            return JsonResponse({'error': 'Room does not exist'}, status=400)
+
+        if not file:
+            return JsonResponse({'error': 'No file uploaded'}, status=400)
+
+         # Create and save the message
+        message = Message.objects.create(
+            user=request.user,
+            room=room_instance,
+            body=body,
+            file=file
+        )
+        # Return a JSON response
+        return JsonResponse({'message': 'File uploaded successfully'}, status=201)
+ 
+
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
 
 def room(request,pk):
     room = Room.objects.get(id=pk)
@@ -111,28 +148,7 @@ def updateRoom(request,pk):
         return redirect('home')
     context = {'form':form,'room':room}
     return render(request,'base/room_form.html',context)
-    
-# def upload_file(request):
-#     if request.method == 'POST':
-#         print(request)
-#         file = request.FILES.get('file')
-#         room_id = request.POST.get('room_id')  # Pass room ID from the frontend
-#         try:
-#             room = Room.objects.get(id=room_id)
-#         except Room.DoesNotExist:
-#             return JsonResponse({'error': 'Room does not exist'}, status=400)
 
-#         if file:
-#             message = Message.objects.create(
-#                 user=request.user,
-#                 room=room,
-#                 body="File uploaded",
-#                 file=file
-#             )
-#             return JsonResponse({'message': 'File uploaded successfully', 'file_url': message.file.url})
-#         else:
-#             return JsonResponse({'error': 'No file uploaded'}, status=400)
-#     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 @login_required(login_url='login')
@@ -142,19 +158,19 @@ def deleteRoom(request,pk):
         return HttpResponse('You are not the permission to delete this room')
     if request.method == 'POST':
         room.delete()
-        return redirect('home')
+        return redirect(home)
     return render(request,'base/delete.html',{'obj':room})
 
 @login_required(login_url='login')
-def deleteMessage(request,pk):
+def deleteMessage(request,pk,Id):
     message = Message.objects.get(id=pk)
-
+    
     if request.user != message.user:
         return HttpResponse('You are not allowed here!!')
     
     if request.method == 'POST':
         message.delete()
-        return redirect('home')
+        return redirect('room',Id)
     return render(request,'base/delete.html',{'obj':message})
 login_required(login_url='login')
 def updateUser(request):
